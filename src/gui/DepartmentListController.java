@@ -93,7 +93,6 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
 	private void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 		try {
-
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
 
@@ -104,18 +103,15 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Enter Department Data");
+			dialogStage.setTitle("Enter Department data");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
-
 		} catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-
 		}
-
 	}
 
 	@Override
@@ -161,19 +157,19 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	}
 
 	private void removeEntity(Department obj) {
-		Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to Delete?");
-		if (result.get() == ButtonType.OK);
-			
-		if (service == null) {
-			throw new IllegalStateException("Service was null");
-		}
-		try {
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete?");
 
-			service.remove(obj);
-			updateTableView();
-		} catch (DbIntegrityException e) {
-			Alerts.showAlert("Error Removing obj", null, e.getMessage(), AlertType.ERROR);
-
+		if (result.get() == ButtonType.OK) {
+			if (service == null) {
+				throw new IllegalStateException("Service was null");
+			}
+			try {
+				service.remove(obj);
+				updateTableView();
+			}
+			catch (DbIntegrityException e) {
+				Alerts.showAlert("Error removing object", null, e.getMessage(), AlertType.ERROR);
+			}
 		}
 	}
 }
